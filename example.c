@@ -1,6 +1,7 @@
 #include "example.h"
 
-int get_one(void)
+int get_one(int*rc)
 {
-    return 1;
+    *rc=1;
+    return -1;
 }

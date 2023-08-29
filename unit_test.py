@@ -4,13 +4,14 @@ import cffi
 import importlib
 
 
+ffibuilder = cffi.FFI()
+
 def load(filename):
     source = open(filename + '.c').read()
     includes = open(filename + '.h').read()
 
-    ffibuilder = cffi.FFI()
     ffibuilder.cdef(includes)
-    ffibuilder.set_source(filename + '_', source)
+    ffibuilder.set_source(filename + '_', source, include_dirs=['/usr/include/x86_64-linux-gnu/python3.8', '/usr/include/python3.8'])
     ffibuilder.compile()
 
     module = importlib.import_module(filename + '_')
@@ -20,7 +21,9 @@ def load(filename):
 class TestOne(unittest.TestCase):
     def test_one(self):
         module = load('example')
-        self.assertEqual(module.get_one(), 1)
+        rc = ffibuilder.new("int*", 0)
+        self.assertEqual(module.get_one(rc), -1)
+        self.assertEqual(1, rc[0])
 
 
 if __name__ == '__main__':
