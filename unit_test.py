@@ -22,7 +22,7 @@ class TestOne(unittest.TestCase):
     def test_one(self):
         module = load('example')
         rc = ffibuilder.new("int*", 0)
-        self.assertEqual(module.get_one(rc), -1)
+        self.assertEqual(module.get_one(rc), 0)
         self.assertEqual(1, rc[0])
 
 
